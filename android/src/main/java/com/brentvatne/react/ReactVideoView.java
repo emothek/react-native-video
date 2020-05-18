@@ -116,7 +116,7 @@ public class ReactVideoView extends ScalableVideoView implements
 
     private String mSrcUriString = null;
     private String mSrcType = "mp4";
-    private ReadableMap mRequestHeaders = null;
+    //private ReadableMap mRequestHeaders = null;
     private boolean mSrcIsNetwork = false;
     private boolean mSrcIsAsset = false;
     private ScalableType mResizeMode = ScalableType.LEFT_TOP;
@@ -250,17 +250,17 @@ public class ReactVideoView extends ScalableVideoView implements
         }
     }
 
-    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, final ReadableMap requestHeaders) {
-        setSrc(uriString, type, isNetwork, isAsset, requestHeaders, 0, 0);
+    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset /*, final ReadableMap requestHeaders*/) {
+        setSrc(uriString, type, isNetwork, isAsset, /*requestHeaders,*/ 0, 0);
     }
 
-    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, final ReadableMap requestHeaders, final int expansionMainVersion, final int expansionPatchVersion) {
+    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, /*final ReadableMap requestHeaders,*/ final int expansionMainVersion, final int expansionPatchVersion) {
 
         mSrcUriString = uriString;
         mSrcType = type;
         mSrcIsNetwork = isNetwork;
         mSrcIsAsset = isAsset;
-        mRequestHeaders = requestHeaders;
+        //mRequestHeaders = requestHeaders;
         mMainVer = expansionMainVersion;
         mPatchVer = expansionPatchVersion;
 
@@ -289,9 +289,9 @@ public class ReactVideoView extends ScalableVideoView implements
                     headers.put("Cookie", cookie);
                 }
 
-                if (mRequestHeaders != null) {
+               /* if (mRequestHeaders != null) {
                     headers.putAll(toStringMap(mRequestHeaders));
-                }
+                }*/
 
                 /* According to https://github.com/react-native-community/react-native-video/pull/537
                  *   there is an issue with this where it can cause a IOException.
@@ -344,12 +344,12 @@ public class ReactVideoView extends ScalableVideoView implements
 
         WritableMap src = Arguments.createMap();
 
-        WritableMap wRequestHeaders = Arguments.createMap();
-        wRequestHeaders.merge(mRequestHeaders);
+       // WritableMap wRequestHeaders = Arguments.createMap();
+       // wRequestHeaders.merge(mRequestHeaders);
 
         src.putString(ReactVideoViewManager.PROP_SRC_URI, uriString);
         src.putString(ReactVideoViewManager.PROP_SRC_TYPE, type);
-        src.putMap(ReactVideoViewManager.PROP_SRC_HEADERS, wRequestHeaders);
+        //src.putMap(ReactVideoViewManager.PROP_SRC_HEADERS, wRequestHeaders);
         src.putBoolean(ReactVideoViewManager.PROP_SRC_IS_NETWORK, isNetwork);
         if(mMainVer>0) {
             src.putInt(ReactVideoViewManager.PROP_SRC_MAINVER, mMainVer);
@@ -707,10 +707,10 @@ public class ReactVideoView extends ScalableVideoView implements
         super.onAttachedToWindow();
 
         if(mMainVer>0) {
-            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, mRequestHeaders, mMainVer, mPatchVer);
+            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, /*mRequestHeaders ,*/ mMainVer, mPatchVer);
         }
         else {
-            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, mRequestHeaders);
+            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset /*,mRequestHeaders*/);
         }
         setKeepScreenOn(true);
     }
